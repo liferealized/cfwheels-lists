@@ -17,7 +17,7 @@
       , placement="prepend") />
 </cffunction>
 
-<!--- private methods --->
+<!--- faux private methods --->
 
 <cffunction name="$defaultListsParams" access="public" output="false" returntype="void">
   <cfargument name="page" type="string" default="#$gls('params.page')#" />
