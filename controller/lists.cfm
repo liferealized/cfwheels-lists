@@ -1,11 +1,23 @@
 <cffunction name="defaultListParams" access="public" output="false" returntype="void">
-  <cfscript>
-    filters(
+  <cfset filters(
         type="before"
       , through="$defaultListsParams"
-      , only="index");
-  </cfscript>
+      , only="index") />
 </cffunction>
+
+<cffunction name="defaultSort" access="public" output="false" returntype="void">
+  <cfargument name="sort" type="string" required="true" />
+  <cfargument name="direction" type="string" required="false" default="asc" />
+  <!--- save our sort and direction in the class settings for later --->
+  <cfset variables.$class.lists.sort = arguments.sort />
+  <cfset variables.$class.lists.direction = arguments.direction />
+  <cfset filters(type="before"
+      , through="$defaultSort"
+      , only="index"
+      , placement="prepend") />
+</cffunction>
+
+<!--- private methods --->
 
 <cffunction name="$defaultListsParams" access="public" output="false" returntype="void">
   <cfargument name="page" type="string" default="#$gls('params.page')#" />
@@ -28,6 +40,17 @@
     // make sure our direction is correct or default
     if (!listFindNoCase(",asc,desc", params[arguments.direction], ",", true))
       params[arguments.direction] = "";
+  </cfscript>
+</cffunction>
+
+<cffunction name="$defaultSort" access="public" output="false" returntype="void">
+  <cfargument name="sort" type="string" default="#$gls('params.sort')#" />
+  <cfargument name="dir" type="string" default="#$gls('params.direction')#" />
+  <cfscript>
+    if (! structKeyExists(params, arguments.sort) || !len(params[arguments.sort]))
+      params[arguments.sort] = variables.$class.lists.sort;
+    if (! structKeyExists(params, arguments.dir) || !len(params[arguments.dir]))
+      params[arguments.dir] = variables.$class.lists.direction;
   </cfscript>
 </cffunction>
 
