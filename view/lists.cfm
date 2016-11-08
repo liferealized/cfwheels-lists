@@ -17,7 +17,6 @@
   <cfargument name="noListPartial" type="string" required="false" default="#$gls("partials.nolistitems")#" />
   <cfargument name="searchPartial" type="string" required="false" default="#$gls("partials.search")#" />
   <cfargument name="paginationPartial" type="string" required="false" default="#$gls("partials.pagination")#" />
-
   <cfargument name="$baseTemplatePath" type="string" required="false" default="plugins/lists" />
   <cfscript>
     // get our setting for the search param name

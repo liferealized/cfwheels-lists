@@ -11,5 +11,7 @@
   <cfinclude template="events/onapplicationstart.cfm" />
   <cfinclude template="controller/lists.cfm" />
   <cfinclude template="view/lists.cfm" />
+  <cfinclude template="view/miscellaneous.cfm" />
+
 
 </cfcomponent>

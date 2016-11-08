@@ -14,9 +14,9 @@
   <cfparam name="application.lists.partials.pagination" type="string" default="/partials/pagination" />
 
   <!--- defaults for the css icons to use for arrow when sorting is allowed --->
-  <cfparam name="application.lists.rendering.sorting.icons.up" type="string" default="ion ion-arrow-up-b" />
-  <cfparam name="application.lists.rendering.sorting.icons.down" type="string" default="ion ion-arrow-down-b" />
+  <cfparam name="application.lists.rendering.sorting.icons.up" type="string" default="" />
+  <cfparam name="application.lists.rendering.sorting.icons.down" type="string" default="" />
 
   <!--- defaults for the table classes to add in --->
-  <cfparam name="application.lists.rendering.table.class" type="string" default="table table-striped" />
+  <cfparam name="application.lists.rendering.table.class" type="string" default="" />
 </cflock>

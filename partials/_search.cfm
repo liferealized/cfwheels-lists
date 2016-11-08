@@ -6,7 +6,7 @@
         #hiddenFieldTag(name=loc.sort, value=params[loc.sort])#
         #textFieldTag(name=loc.search, value=params[loc.search], class="search-query", placeholder="Search #capitalize(pluralize(loc.modelName))#")#
         <strong>or</strong>
-        #linkTo(route=loc.route, id="clear-search", text="View all #pluralize(loc.modelName)#", title="Reset Search", class="btn btn-info", argumentCollection=loc.linkToArgs)#
+        #linkTo(route=loc.route, id="clear-search", text="View all #pluralize(loc.modelName)#", title="Reset Search", argumentCollection=loc.linkToArgs)#
       #endFormTag()#
     </div>
   </cfif>
