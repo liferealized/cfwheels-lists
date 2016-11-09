@@ -5,6 +5,6 @@
     , handle = arguments.modelName
     , alwaysShowAnchors = true
     , route = params.route
-    , name = "p"
+    , name = loc.page
     , argumentCollection=loc.paginationLinkToArgs)#
 </cfoutput>
