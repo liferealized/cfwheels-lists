@@ -31,7 +31,7 @@
     arguments.linkToArgs = {};
     arguments.model = model(arguments.modelName);
     arguments.properties = ListToArray(arguments.properties);
-    arguments.paginationLinkToArgs = {};
+    arguments.paginationLinkToArgs = { "params" = "" };
 
     for (local.arg in arguments) {
 
@@ -45,8 +45,31 @@
 
       if (structKeyExists(variables.params, arguments.search)
           and len(variables.params[arguments.search])) {
-        arguments.paginationLinkToArgs["params"] = "#arguments.search#=";
-        arguments.paginationLinkToArgs["params"] &= variables.params[arguments.search];
+        arguments.paginationLinkToArgs.params = listAppend(
+            arguments.paginationLinkToArgs.params
+          , "#arguments.search#=#variables.params[arguments.search]#"
+          , "&"
+        );
+      }
+    }
+
+    if (arguments.allowSort) {
+
+      if (structKeyExists(variables.params, arguments.sort)
+          and len(variables.params[arguments.sort])) {
+        arguments.paginationLinkToArgs.params = listAppend(
+            arguments.paginationLinkToArgs.params
+          , "#arguments.sort#=#variables.params[arguments.sort]#"
+          , "&"
+        );
+      }
+      if (structKeyExists(variables.params, arguments.direction)
+          and len(variables.params[arguments.direction])) {
+        arguments.paginationLinkToArgs.params = listAppend(
+            arguments.paginationLinkToArgs.params
+          , "#arguments.direction#=#variables.params[arguments.direction]#"
+          , "&"
+        );
       }
     }
 
