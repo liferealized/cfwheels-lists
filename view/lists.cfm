@@ -2,7 +2,7 @@
   <cfargument name="modelName" type="string" required="true" />
   <cfargument name="collection" type="query" required="true" />
   <cfargument name="properties" type="string" required="true" />
-  <cfargument name="route" type="string" required="false" default="#pluralize(variables.params.route)#" />
+  <cfargument name="route" type="string" required="false" default="#variables.params.route#" />
   <cfargument name="doPagination" type="boolean" required="false" default="true" />
   <cfargument name="allowSearch" type="boolean" required="false" default="false" />
   <cfargument name="allowSort" type="boolean" required="false" default="true" />
@@ -97,18 +97,18 @@
     local.iconDn = $getListSetting("rendering.sorting.icons.down");
 
     // default out text and title
-    local.text = local.model.$label(arguments.property);
-    local.title = trim(stripTags(local.text));
+    arguments.text = local.model.$label(arguments.property);
+    arguments.title = trim(stripTags(arguments.text));
 
     // end users have the ability to override text display with a helper function
     local.formatMethod = "format#arguments.modelName##arguments.property#Label";
 
     if (structKeyExists(variables, local.formatMethod))
-      local.text = $invoke(method=local.formatMethod);
+      arguments.text = $invoke(method=local.formatMethod);
 
     // return just the text if we don't allow sorting
     if (!arguments.allowSort)
-      return local.text;
+      return arguments.text;
 
     // are we on the currently shorted column
     local.d = "asc";
@@ -117,20 +117,19 @@
       local.d = (arguments.params[local.direction] == "asc") ? "desc" : "asc";
 
       if (arguments.params.d == "asc")
-        local.text &= " " &  $element(
+        arguments.text &= " " &  $element(
             name="span"
           , attributes={ class="#local.iconUp#" });
       else
-        local.text &= " " & $element(
+        arguments.text &= " " & $element(
             name="span"
           , attributes={ class="#local.iconDn#" });
     }
 
+    structDelete(arguments, "params", false);
+    arguments.params = "s=#arguments.property#&d=#local.d#";
+
     // display the link
-    return linkTo(
-        route=arguments.route
-      , text=local.text
-      , title=local.title
-      , params="s=#arguments.property#&d=#local.d#");
+    return linkTo(argumentCollection = arguments);
   </cfscript>
 </cffunction>

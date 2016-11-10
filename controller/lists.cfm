@@ -1,19 +1,21 @@
 <cffunction name="defaultListParams" access="public" output="false" returntype="void">
+  <cfargument name="only" type="string" required="false" default="index" />
   <cfset filters(
         type="before"
       , through="$defaultListsParams"
-      , only="index") />
+      , only=arguments.only) />
 </cffunction>
 
 <cffunction name="defaultSort" access="public" output="false" returntype="void">
   <cfargument name="sort" type="string" required="true" />
   <cfargument name="direction" type="string" required="false" default="asc" />
+  <cfargument name="only" type="string" required="false" default="index" />
   <!--- save our sort and direction in the class settings for later --->
   <cfset variables.$class.lists.sort = arguments.sort />
   <cfset variables.$class.lists.direction = arguments.direction />
   <cfset filters(type="before"
       , through="$defaultSort"
-      , only="index"
+      , only=arguments.only
       , placement="prepend") />
 </cffunction>
 
