@@ -28,9 +28,10 @@
     // get our rendering settings to use in our partials
     arguments.settings.tc= $getListSetting("rendering.table.class");
 
-    arguments.linkToArgs = {};
     arguments.model = model(arguments.modelName);
     arguments.properties = ListToArray(arguments.properties);
+
+    arguments.linkToArgs = { "params" = "" };
     arguments.paginationLinkToArgs = { "params" = "" };
 
     for (local.arg in arguments) {
@@ -45,6 +46,11 @@
 
       if (structKeyExists(variables.params, arguments.search)
           and len(variables.params[arguments.search])) {
+        arguments.linkToArgs.params = listAppend(
+            arguments.linkToArgs.params
+          , "#arguments.search#=#variables.params[arguments.search]#"
+          , "&"
+        );
         arguments.paginationLinkToArgs.params = listAppend(
             arguments.paginationLinkToArgs.params
           , "#arguments.search#=#variables.params[arguments.search]#"
@@ -83,7 +89,7 @@
   <cfargument name="modelName" type="string" required="true" />
   <cfargument name="property" type="string" required="true" />
   <cfargument name="route"  type="string"required="true" />
-  <cfargument name="params" required="false" default="#variables.params#" />
+  <cfargument name="params" required="false" default="" />
   <cfscript>
     // get our model object to help with formatting
     local.model = model(arguments.modelName);
@@ -110,13 +116,13 @@
     if (!arguments.allowSort)
       return arguments.text;
 
-    // are we on the currently shorted column
+    // are we on the currently sorted column
     local.d = "asc";
-    if (arguments.params[local.sort] == arguments.property) {
+    if (variables.params[local.sort] == arguments.property) {
 
-      local.d = (arguments.params[local.direction] == "asc") ? "desc" : "asc";
+      local.d = (variables.params[local.direction] == "asc") ? "desc" : "asc";
 
-      if (arguments.params.d == "asc")
+      if (variables.params.d == "asc")
         arguments.text &= " " &  $element(
             name="span"
           , attributes={ class="#local.iconUp#" });
@@ -126,8 +132,21 @@
           , attributes={ class="#local.iconDn#" });
     }
 
-    structDelete(arguments, "params", false);
-    arguments.params = "s=#arguments.property#&d=#local.d#";
+    arguments.params = listAppend(
+        arguments.params
+      , "#local.sort#=#arguments.property#"
+      , "&"
+    );
+
+    arguments.params = listAppend(
+        arguments.params
+      , "#local.direction#=#local.d#"
+      , "&"
+    );
+
+    structDelete(arguments, "modelName", false);
+    structDelete(arguments, "property", false);
+    structDelete(arguments, "allowSort", false);
 
     // display the link
     return linkTo(argumentCollection = arguments);
